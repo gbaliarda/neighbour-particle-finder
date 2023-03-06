@@ -55,18 +55,23 @@ public class CellIndexMethod {
     public OutputDTO calculateAllDistances() {
         long startTime = System.currentTimeMillis();
         Map<Particle, List<Particle>> neighbours = new HashMap<>();
+        // TODO: maybe make this piece of code nicer
         for (int x = 1; x <= cellAmount; x++) {
             for (int y = 0 ; y < cellAmount; y++) {
                 long currentCell = x + y * cellAmount;
-                if (y > 0) {
-                    addNeighboursDistanceBetweenCells(neighbours, currentCell, x + (y - 1) * cellAmount);
-                    if (x < cellAmount)
-                        addNeighboursDistanceBetweenCells(neighbours, currentCell, (x + 1) + (y - 1) * cellAmount);
+                if (y > 0 || isPeriodic) {
+                    long northCell = y > 0 ? x + (y - 1) * cellAmount : x + (cellAmount - 1) * cellAmount;
+                    addNeighboursDistanceBetweenCells(neighbours, currentCell, northCell);
                 }
-                if (x < cellAmount) {
-                    addNeighboursDistanceBetweenCells(neighbours, currentCell, (x + 1) + y * cellAmount);
-                    if (y < cellAmount - 1)
-                        addNeighboursDistanceBetweenCells(neighbours, currentCell, (x + 1) + (y + 1) * cellAmount);
+                if (x < cellAmount || isPeriodic) {
+                    long eastCell = ((x + 1) % cellAmount) + y * cellAmount;
+                    long northEastCell = y > 0 ? ((x + 1) % cellAmount) + (y - 1) * cellAmount : ((x + 1) % cellAmount) + (cellAmount - 1) * cellAmount;
+                    long southEastCell = y < cellAmount - 1 ? ((x + 1) % cellAmount) + (y + 1) * cellAmount : (x + 1) % cellAmount;
+                    addNeighboursDistanceBetweenCells(neighbours, currentCell, eastCell);
+                    if (y > 0 || isPeriodic)
+                        addNeighboursDistanceBetweenCells(neighbours, currentCell, northEastCell);
+                    if (y < cellAmount - 1 || isPeriodic)
+                        addNeighboursDistanceBetweenCells(neighbours, currentCell, southEastCell);
                 }
             }
         }
