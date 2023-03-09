@@ -30,6 +30,7 @@ public class FileParser {
             Particle p = new Particle(i + 1, radius, property);
             input.addParticle(p);
         }
+        scanner.close();
     }
 
     private static void parseDynamicFile(String dynamicFile) throws FileNotFoundException {
@@ -44,5 +45,6 @@ public class FileParser {
 
             p.setPosition(x, y);
         });
+        scanner.close();
     }
 }

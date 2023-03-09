@@ -1,14 +1,10 @@
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
 public class App {
+    public static final String OUTPUT_FILE = "output.txt";
 
     public static void main( String[] args ) {
         if (args.length < 2) {
@@ -31,10 +27,30 @@ public class App {
                 System.out.println();
             });
             System.out.printf("Execution time: %f", output.getExecuteTime());
+            generateOutputFile(output);
         } catch (FileNotFoundException e) {
             System.out.println("Error while parsing files");
+        } catch (IOException e) {
+            System.out.println("Error while generating output file");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static void generateOutputFile(Output output) throws IOException {
+        File file = new File(OUTPUT_FILE);
+        FileWriter fileWriter = new FileWriter(file);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(output.getExecuteTime()).append("\n");
+        output.getNeighbours().forEach((particle, neighbours) -> {
+            stringBuilder.append(particle.getId());
+            neighbours.forEach(neighbour -> {
+                stringBuilder.append(" ").append(neighbour.getId());
+            });
+            stringBuilder.append("\n");
+        });
+        fileWriter.write(stringBuilder.toString());
+        fileWriter.close();
     }
 }
