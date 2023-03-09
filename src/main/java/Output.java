@@ -1,11 +1,11 @@
 import java.util.List;
 import java.util.Map;
 
-public class OutputDTO {
+public class Output {
     private Map<Particle, List<Particle>> neighbours;
     private double executeTime;
 
-    public OutputDTO(Map<Particle, List<Particle>> neighbours, double executeTime) {
+    public Output(Map<Particle, List<Particle>> neighbours, double executeTime) {
         this.neighbours = neighbours;
         this.executeTime = executeTime;
     }

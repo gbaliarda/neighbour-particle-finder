@@ -52,7 +52,7 @@ public class CellIndexMethod {
             });
         });
     }
-    public OutputDTO calculateAllDistances() {
+    public Output calculateAllDistances() {
         long startTime = System.currentTimeMillis();
         Map<Particle, List<Particle>> neighbours = new HashMap<>();
         // TODO: maybe make this piece of code nicer
@@ -75,6 +75,6 @@ public class CellIndexMethod {
                 }
             }
         }
-        return new OutputDTO(neighbours, System.currentTimeMillis() - startTime);
+        return new Output(neighbours, System.currentTimeMillis() - startTime);
     }
 }

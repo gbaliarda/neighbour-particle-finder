@@ -2,13 +2,20 @@ import java.util.Objects;
 
 public class Particle {
     private final int id;
-    private double x, y, radius;
+    private double x, y, radius, property;
 
-    public Particle(int id, double x, double y, int radius) {
+    public Particle(int id, double radius, double property) {
+        this.id = id;
+        this.radius = radius;
+        this.property = property;
+    }
+
+    public Particle(int id, double x, double y, double radius, double property) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.property = property;
     }
 
     public int getId() {
@@ -37,6 +44,19 @@ public class Particle {
 
     public void setRadius(double radius) {
         this.radius = radius;
+    }
+
+    public double getProperty() {
+        return property;
+    }
+
+    public void setProperty(double property) {
+        this.property = property;
+    }
+
+    public void setPosition(double x, double y) {
+        setX(x);
+        setY(y);
     }
 
     @Override
