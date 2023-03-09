@@ -19,13 +19,6 @@ public class App {
             Input input = FileParser.parseFiles(staticFile, dynamicFile);
             CellIndexMethod t = new CellIndexMethod(input.getParticles(), input.getAmountParticles(), input.getLengthMatrix(), input.getAmountCells(),  input.getInteractionRadius(), Boolean.parseBoolean(isPeriodic));
             Output output = t.calculateAllDistances();
-            output.getNeighbours().forEach((particle, neighbours) -> {
-                System.out.printf("Particle with id %d is neighbour of: ", particle.getId());
-                neighbours.forEach(neighbour -> {
-                    System.out.printf(" particle %d ", neighbour.getId());
-                });
-                System.out.println();
-            });
             System.out.printf("Execution time: %f", output.getExecuteTime());
             generateOutputFile(output);
         } catch (FileNotFoundException e) {

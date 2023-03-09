@@ -44,10 +44,12 @@ public class CellIndexMethod {
         map.get(currentCell).forEach((currentParticle) -> {
             map.get(otherCell).forEach((otherParticle) -> {
                 neighbours.putIfAbsent(currentParticle, new LinkedList<>());
-                if (calculateDistance(currentParticle, otherParticle) < interactionRadius) {
+                if (currentParticle.getId() != otherParticle.getId() && calculateDistance(currentParticle, otherParticle) < interactionRadius) {
                     neighbours.get(currentParticle).add(otherParticle);
-                    neighbours.putIfAbsent(otherParticle, new LinkedList<>());
-                    neighbours.get(otherParticle).add(currentParticle);
+                    if (currentCell != otherCell) {
+                        neighbours.putIfAbsent(otherParticle, new LinkedList<>());
+                        neighbours.get(otherParticle).add(currentParticle);
+                    }
                 }
             });
         });
@@ -59,6 +61,7 @@ public class CellIndexMethod {
         for (int x = 1; x <= cellAmount; x++) {
             for (int y = 0 ; y < cellAmount; y++) {
                 long currentCell = x + y * cellAmount;
+                addNeighboursDistanceBetweenCells(neighbours, currentCell, currentCell);
                 if (y > 0 || isPeriodic) {
                     long northCell = y > 0 ? x + (y - 1) * cellAmount : x + (cellAmount - 1) * cellAmount;
                     addNeighboursDistanceBetweenCells(neighbours, currentCell, northCell);
