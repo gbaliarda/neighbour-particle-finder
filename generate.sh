@@ -22,5 +22,5 @@ done
 
 for ((i=1; i<=$amount_particles; i++))
 do
-    printf "%.2f %.2f\n" "$(($RANDOM % ($map_length * 100)))e-2" "$(($RANDOM % ($map_length * 100)))e-2" >> dynamic.txt
+    printf "%.2f %.2f %.2f %.2f\n" "$(($RANDOM % ($map_length * 100)))e-2" "$(($RANDOM % ($map_length * 100)))e-2" "0.00" "0.00" >> dynamic.txt
 done
