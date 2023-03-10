@@ -20,7 +20,7 @@ public class CellIndexMethod {
      */
     public CellIndexMethod(List<Particle> particles, long N, double L, long M, double r, boolean isPeriodic) throws Exception {
         if (L/M <= r)
-            throw new Exception(); // make new checked exception
+            throw new Exception("Invalid parameters");
         this.map = new HashMap<>();
         this.particles = particles;
         this.cellAmount = M;
@@ -29,8 +29,8 @@ public class CellIndexMethod {
         this.isPeriodic = isPeriodic;
         double cellSize = L/M;
         particles.forEach((p) -> {
-            long xCellNumber = Math.round(p.getX() % cellSize) + 1;
-            long yCellNumber = Math.round(p.getY() % cellSize);
+            long xCellNumber = (long)(p.getX() / cellSize) + 1;
+            long yCellNumber = (long)(p.getY() / cellSize);
             long cellNumber = xCellNumber + yCellNumber * M;
             map.putIfAbsent(cellNumber, new LinkedList<>());
             map.get(cellNumber).add(p);
@@ -47,7 +47,7 @@ public class CellIndexMethod {
             if (yDistance * 2 > mapLength)
                 yDistance = mapLength - yDistance;
         }
-        return Math.sqrt(xDistance*xDistance + yDistance*yDistance) - p1.getRadius() - p2.getRadius(); // What happens if two circles are concentric?
+        return Math.sqrt(xDistance*xDistance + yDistance*yDistance) - p1.getRadius() - p2.getRadius();
     }
 
     private boolean particlesAreNeighbours(Particle p1, Particle p2) {
@@ -59,8 +59,8 @@ public class CellIndexMethod {
             return;
         map.get(currentCell).forEach((currentParticle) -> {
             map.get(otherCell).forEach((otherParticle) -> {
-                neighbours.putIfAbsent(currentParticle, new LinkedList<>());
                 if (particlesAreNeighbours(currentParticle, otherParticle)) {
+                    neighbours.putIfAbsent(currentParticle, new LinkedList<>());
                     neighbours.get(currentParticle).add(otherParticle);
                     if (currentCell != otherCell) {
                         neighbours.putIfAbsent(otherParticle, new LinkedList<>());
