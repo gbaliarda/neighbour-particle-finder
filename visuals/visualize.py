@@ -1,4 +1,5 @@
 from manim import *
+import tomllib
 
 from parse_inputs import parse_static_inputs, parse_dynamic_inputs, parse_simulation_output
 
@@ -6,10 +7,18 @@ from parse_inputs import parse_static_inputs, parse_dynamic_inputs, parse_simula
 STATIC_FILE = "./static.txt"
 DYNAMIC_FILE = "./dynamic.txt"
 OUTPUT_FILE = "./output.txt"
-TARGET_PARTICLE_ID = 4
+
+# Configuration
+with open("config.toml", "rb") as f:
+  config = tomllib.load(f)
+  TARGET_PARTICLE_ID = config["visuals"]["target_particle_id"]
+  PERIODIC_BOUNDARY_CONDITIONS = config["CIM"]["periodic_boundary"]
+
+print("Target Particle ID:", TARGET_PARTICLE_ID)
+print("Periodic Boundary Conditions:", PERIODIC_BOUNDARY_CONDITIONS)
 
 # Read the static inputs
-_, L, _, Rc, _ = parse_static_inputs(STATIC_FILE)
+_, L, _, Rc, properties = parse_static_inputs(STATIC_FILE)
 
 print("L:", L)
 print("Rc:", Rc)
@@ -45,16 +54,39 @@ class Particle(Scene):
     # Create the dots for each particle
     dots = VGroup()
     for particle_id, position in particles.items():
-      dot = Dot()
+      particle_radius = properties[particle_id][0]
+      dot = Dot(radius=particle_radius*grid_scale)
 
       if particle_id == TARGET_PARTICLE_ID:
         dot.set_color(RED)
+
+        if PERIODIC_BOUNDARY_CONDITIONS:
+          reflected_x = position[0]
+          reflected_y = position[1]
+
+          if position[0] - Rc < 0:
+            reflected_x = position[0] + L
+          elif position[0] + Rc > L:
+            reflected_x = position[0] - L
+
+          if position[1] - Rc < 0:
+            reflected_y = position[1] + L
+          elif position[1] + Rc > L:
+            reflected_y = position[1] - L
+ 
+          if reflected_x != position[0] or reflected_y != position[1]:
+            reflected_dot = Dot(radius=particle_radius*grid_scale, color=RED)
+            reflected_dot.move_to(plane.c2p(reflected_x, reflected_y))
+            circle = Circle(radius=Rc*grid_scale, color=RED, stroke_width=2)
+            circle.move_to(reflected_dot.get_center())
+            self.add(reflected_dot, circle)
+
       elif particle_id in neighbours[TARGET_PARTICLE_ID]:
         dot.set_color(GREEN)
       else:
         dot.set_opacity(0.3)
 
-      dot.move_to(plane.coords_to_point(*position))
+      dot.move_to(plane.c2p(*position))
       dots.add(dot)
 
       if particle_id == TARGET_PARTICLE_ID:
