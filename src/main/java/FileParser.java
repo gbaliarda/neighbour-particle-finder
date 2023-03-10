@@ -44,6 +44,8 @@ public class FileParser {
             double y = scanner.nextDouble();
 
             p.setPosition(x, y);
+            scanner.nextDouble();
+            scanner.nextDouble();
         });
         scanner.close();
     }

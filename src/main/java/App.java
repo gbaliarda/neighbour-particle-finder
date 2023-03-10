@@ -19,8 +19,10 @@ public class App {
             Input input = FileParser.parseFiles(staticFile, dynamicFile);
             CellIndexMethod t = new CellIndexMethod(input.getParticles(), input.getAmountParticles(), input.getLengthMatrix(), input.getAmountCells(),  input.getInteractionRadius(), Boolean.parseBoolean(isPeriodic));
             Output output = t.calculateAllDistances();
-            System.out.printf("Execution time: %f", output.getExecuteTime());
+            System.out.printf("CIM Execution time: %f\n", output.getExecuteTime());
             generateOutputFile(output);
+            Output outputBruteForce = t.calculateAllDistancesBruteForce();
+            System.out.printf("BF Execution time: %f\n", outputBruteForce.getExecuteTime());
         } catch (FileNotFoundException e) {
             System.out.println("Error while parsing files");
         } catch (IOException e) {

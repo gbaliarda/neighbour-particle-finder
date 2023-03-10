@@ -2,10 +2,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CellIndexMethod {
     private final Map<Long, List<Particle>> map;
+    private final List<Particle> particles;
     private final long cellAmount;
+    private final double mapLength;
     private final double interactionRadius;
     private final boolean isPeriodic;
 
@@ -17,15 +20,17 @@ public class CellIndexMethod {
      */
     public CellIndexMethod(List<Particle> particles, long N, double L, long M, double r, boolean isPeriodic) throws Exception {
         if (L/M <= r)
-            throw new Exception(); // make new checked exception
+            throw new Exception("Invalid parameters");
         this.map = new HashMap<>();
+        this.particles = particles;
         this.cellAmount = M;
+        this.mapLength = L;
         this.interactionRadius = r;
         this.isPeriodic = isPeriodic;
         double cellSize = L/M;
         particles.forEach((p) -> {
-            long xCellNumber = Math.round(p.getX() % cellSize) + 1;
-            long yCellNumber = Math.round(p.getY() % cellSize);
+            long xCellNumber = (long)(p.getX() / cellSize) + 1;
+            long yCellNumber = (long)(p.getY() / cellSize);
             long cellNumber = xCellNumber + yCellNumber * M;
             map.putIfAbsent(cellNumber, new LinkedList<>());
             map.get(cellNumber).add(p);
@@ -35,7 +40,18 @@ public class CellIndexMethod {
     private double calculateDistance(Particle p1, Particle p2) {
         double xDistance = Math.abs(p2.getX() - p1.getX());
         double yDistance = Math.abs(p2.getY() - p1.getY());
-        return Math.sqrt(xDistance*xDistance + yDistance*yDistance) - p1.getRadius() - p2.getRadius(); // What happens if two circles are concentric?
+
+        if (isPeriodic) {
+            if (xDistance * 2 > mapLength)
+                xDistance = mapLength - xDistance;
+            if (yDistance * 2 > mapLength)
+                yDistance = mapLength - yDistance;
+        }
+        return Math.sqrt(xDistance*xDistance + yDistance*yDistance) - p1.getRadius() - p2.getRadius();
+    }
+
+    private boolean particlesAreNeighbours(Particle p1, Particle p2) {
+        return p1.getId() != p2.getId() && calculateDistance(p1, p2) < interactionRadius;
     }
 
     private void addNeighboursDistanceBetweenCells(Map<Particle, List<Particle>> neighbours, long currentCell, long otherCell) {
@@ -43,8 +59,8 @@ public class CellIndexMethod {
             return;
         map.get(currentCell).forEach((currentParticle) -> {
             map.get(otherCell).forEach((otherParticle) -> {
-                neighbours.putIfAbsent(currentParticle, new LinkedList<>());
-                if (currentParticle.getId() != otherParticle.getId() && calculateDistance(currentParticle, otherParticle) < interactionRadius) {
+                if (particlesAreNeighbours(currentParticle, otherParticle)) {
+                    neighbours.putIfAbsent(currentParticle, new LinkedList<>());
                     neighbours.get(currentParticle).add(otherParticle);
                     if (currentCell != otherCell) {
                         neighbours.putIfAbsent(otherParticle, new LinkedList<>());
@@ -54,10 +70,10 @@ public class CellIndexMethod {
             });
         });
     }
+
     public Output calculateAllDistances() {
         long startTime = System.currentTimeMillis();
         Map<Particle, List<Particle>> neighbours = new HashMap<>();
-        // TODO: maybe make this piece of code nicer
         for (int x = 1; x <= cellAmount; x++) {
             for (int y = 0 ; y < cellAmount; y++) {
                 long currentCell = x + y * cellAmount;
@@ -78,6 +94,13 @@ public class CellIndexMethod {
                 }
             }
         }
+        return new Output(neighbours, System.currentTimeMillis() - startTime);
+    }
+
+    public Output calculateAllDistancesBruteForce() {
+        long startTime = System.currentTimeMillis();
+        Map<Particle, List<Particle>> neighbours = new HashMap<>();
+        particles.forEach(p -> neighbours.putIfAbsent(p, particles.stream().filter(otherParticle -> otherParticle.getId() != p.getId() && particlesAreNeighbours(p, otherParticle)).collect(Collectors.toList())));
         return new Output(neighbours, System.currentTimeMillis() - startTime);
     }
 }
