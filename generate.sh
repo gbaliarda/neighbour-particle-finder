@@ -5,7 +5,7 @@ interaction_radius="1.0";
 property="1.000";
 map_length="20";
 amount_cells="5";
-amount_particles="10000";
+amount_particles="10";
 
 printf "$amount_particles
 $map_length

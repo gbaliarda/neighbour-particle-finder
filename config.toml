@@ -1,5 +1,5 @@
 [CIM]
-periodic_boundary = true
+periodic_boundary = false
 
 [visuals]
-target_particle_id = 3
+target_particle_id = 4

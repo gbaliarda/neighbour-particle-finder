@@ -37,7 +37,6 @@ public class App {
         FileWriter fileWriter = new FileWriter(file);
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(output.getExecuteTime()).append("\n");
         output.getNeighbours().forEach((particle, neighbours) -> {
             stringBuilder.append(particle.getId());
             neighbours.forEach(neighbour -> {

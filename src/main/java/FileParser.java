@@ -27,7 +27,7 @@ public class FileParser {
         for (int i = 0; i < input.getAmountParticles(); i++) {
             double radius = scanner.nextDouble();
             double property = scanner.nextDouble();
-            Particle p = new Particle(i + 1, radius, property);
+            Particle p = new Particle(i, radius, property);
             input.addParticle(p);
         }
         scanner.close();
