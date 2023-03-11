@@ -3,16 +3,14 @@ import tomllib
 
 from parse_inputs import parse_static_inputs, parse_dynamic_inputs, parse_simulation_output
 
-# Input files
-STATIC_FILE = "./static.txt"
-DYNAMIC_FILE = "./dynamic.txt"
-OUTPUT_FILE = "./output.txt"
-
 # Configuration
 with open("config.toml", "rb") as f:
   config = tomllib.load(f)
   TARGET_PARTICLE_ID = config["visuals"]["target_particle_id"]
   PERIODIC_BOUNDARY_CONDITIONS = config["CIM"]["periodic_boundary"]
+  STATIC_FILE = config["files"]["static_input"]
+  DYNAMIC_FILE = config["files"]["dynamic_input"]
+  OUTPUT_FILE = config["files"]["output"]
 
 print("Target Particle ID:", TARGET_PARTICLE_ID)
 print("Periodic Boundary Conditions:", PERIODIC_BOUNDARY_CONDITIONS)
