@@ -77,7 +77,7 @@ class Particle(Scene):
           if reflected_x != position[0] or reflected_y != position[1]:
             reflected_dot = Dot(radius=particle_radius*grid_scale, color=RED)
             reflected_dot.move_to(plane.c2p(reflected_x, reflected_y))
-            circle = Circle(radius=Rc*grid_scale, color=RED, stroke_width=2)
+            circle = Circle(radius=(Rc + particle_radius)*grid_scale, color=RED, stroke_width=2)
             circle.move_to(reflected_dot.get_center())
             self.add(reflected_dot, circle)
 
@@ -91,7 +91,7 @@ class Particle(Scene):
 
       if particle_id == TARGET_PARTICLE_ID:
         # The radius needs to be scaled to the axes, so we divide by PI for some reason
-        circle = Circle(radius=Rc*grid_scale, color=RED, stroke_width=2)
+        circle = Circle(radius=(Rc + particle_radius)*grid_scale, color=RED, stroke_width=2)
         circle.move_to(dot.get_center())
         self.add(circle)
 
