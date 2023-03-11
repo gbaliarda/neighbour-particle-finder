@@ -1,5 +1,10 @@
 [CIM]
-periodic_boundary = false
+periodic_boundary = true
 
 [visuals]
-target_particle_id = 4
+target_particle_id = 353
+
+[files]
+static_input = "./static.txt"
+dynamic_input = "./dynamic.txt"
+output = "./output.txt"
