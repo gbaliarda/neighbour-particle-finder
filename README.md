@@ -2,8 +2,13 @@
 
 In order to generate both static and dynamic input files run the following command:
 ```shell
-$> ./generate.sh
+$> ./generate.sh $1 $2 $3 $4
 ```
+where:
+- $1 is the interaction radius
+- $2 is L
+- $3 is M
+- $4 is the amount of particles
 Make sure `generate.sh` has executable permissions
 ```shell
 $> chmod u+x ./generate.sh
@@ -37,12 +42,8 @@ $> mvn clean package
 
 In order to run the algorithm run:
 ```shell
-$> java -jar ./target/neighbour-particle-finder-1.0-SNAPSHOT-jar-with-dependencies.jar {staticFile} {dynamicFile} {isPeriodic}
+$> java -jar ./target/neighbour-particle-finder-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-where:
-- staticFile: relative path to the static file which contains algorithm headers, and each particle radius and property.
-- dynamicFile: relative path to the dynamic file which contains particles position
-- isPeriodic: which can be true or false
 
 This will generate a file called output.txt with each particle and its neighbours. It will also print how long both brute force and cell index method took to execute.
 
@@ -54,4 +55,11 @@ This will generate a file called output.txt with each particle and its neighbour
 Also, [Latex](https://docs.manim.community/en/stable/installation/windows.html#optional-dependencies) is needed to run the animations.
 ```
 manim -pqh --disable_caching --flush_cache visuals/visualize.py
+```
+
+# Run statistics
+
+In order to run statistics make sure `run_stats` is set to true in `config.toml` and run:
+```shell
+$> ./statistics.sh
 ```

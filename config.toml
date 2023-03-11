@@ -8,3 +8,7 @@ target_particle_id = 353
 static_input = "./static.txt"
 dynamic_input = "./dynamic.txt"
 output = "./output.txt"
+
+[statistics]
+times = "./times.txt"
+run_stats = true
