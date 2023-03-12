@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: parametrize this script and remove the `times.txt` file before generating new data
+
 ./generate.sh "1.0" 20 10 100
 for i in {1..10}
 do

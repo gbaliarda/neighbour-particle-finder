@@ -47,6 +47,11 @@ $> java -jar ./target/neighbour-particle-finder-1.0-SNAPSHOT-jar-with-dependenci
 
 This will generate a file called output.txt with each particle and its neighbours. It will also print how long both brute force and cell index method took to execute.
 
+## Taking into account particles with radius
+The `L/M > Rc` criteria when working with non-punctual particles (r > 0) changes to `L / M > Rc + maxR`, where `maxR` is the maximum radius among all the particles in the simulation.
+
+This is to prevent the case where a particle is at a given cell but its border is in a neighbor cell.
+
 # Run visuals
 
 ## Manim
@@ -62,4 +67,9 @@ manim -pqh --disable_caching --flush_cache visuals/visualize.py
 In order to run statistics make sure `run_stats` is set to true in `config.toml` and run:
 ```shell
 $> ./statistics.sh
+```
+
+To visualize the statistics, run:
+```shell
+python visuals/statistics.py
 ```
