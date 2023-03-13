@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# TODO: parametrize this script and remove the `times.txt` file before generating new data
+rm times.txt
 
-./generate.sh "1.0" 20 10 100
+# TODO: parametrize this script
+./generate.sh "1.0" 20 19 1000
 for i in {1..10}
 do
   java -jar ./target/neighbour-particle-finder-1.0-SNAPSHOT-jar-with-dependencies.jar

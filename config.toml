@@ -2,7 +2,7 @@
 periodic_boundary = true
 
 [visuals]
-target_particle_id = 353
+target_particle_id = 47
 
 [files]
 static_input = "./static.txt"

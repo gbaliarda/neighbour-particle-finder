@@ -52,6 +52,10 @@ The `L/M > Rc` criteria when working with non-punctual particles (r > 0) changes
 
 This is to prevent the case where a particle is at a given cell but its border is in a neighbor cell.
 
+## Optimal M
+
+The optimal M should be the larger value possible that satifies the working condition described in the previous point.
+
 # Run visuals
 
 ## Manim

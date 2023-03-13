@@ -19,8 +19,9 @@ public class CellIndexMethod {
     * r: interaction radius
      */
     public CellIndexMethod(List<Particle> particles, long N, double L, long M, double r, boolean isPeriodic) throws Exception {
-        if (L/M <= r)
-            throw new Exception("Invalid parameters");
+       // TODO: consider particle max radius in this condition
+       if (L/M <= r)
+           throw new Exception("Invalid parameters");
         this.map = new HashMap<>();
         this.particles = particles;
         this.cellAmount = M;

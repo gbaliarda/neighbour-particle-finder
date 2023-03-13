@@ -73,6 +73,7 @@ class Particle(Scene):
             reflected_y = position[1] - L
  
           if reflected_x != position[0] or reflected_y != position[1]:
+            # FIXME: when the `reflected_dot` is in a corner, it should be reflected in all other corners
             reflected_dot = Dot(radius=particle_radius*grid_scale, color=RED)
             reflected_dot.move_to(plane.c2p(reflected_x, reflected_y))
             circle = Circle(radius=(Rc + particle_radius)*grid_scale, color=RED, stroke_width=2)
